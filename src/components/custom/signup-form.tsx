@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useFormState } from "react-dom";
-
 import { registerUserAction } from "@/data/actions/auth-actions";
 
 import {
@@ -16,6 +15,10 @@ import {
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+
+import { ZodErrors } from "@/components/custom/zod-errors";
+import { StrapiErrors } from "./strapi-errors";
+import { SubmitButton } from "./submit-button";
 
 const INITIAL_STATE = {
   data: null,
@@ -50,6 +53,7 @@ export function SignupForm() {
                 type="text"
                 placeholder="username"
               />
+              <ZodErrors error={formState?.zodErrors?.username} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -59,6 +63,7 @@ export function SignupForm() {
                 type="email"
                 placeholder="name@example.com"
               />
+              <ZodErrors error={formState?.zodErrors?.email} />
             </div>
 
             <div className="space-y-2">
@@ -69,10 +74,16 @@ export function SignupForm() {
                 type="password"
                 placeholder="password"
               />
+              <ZodErrors error={formState?.zodErrors?.password} />
             </div>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <button className="w-full">Sign Up</button>
+            <SubmitButton
+              className="w-full"
+              text="Sign Up"
+              loadingText="Loading"
+            />
+            <StrapiErrors error={formState?.strapiErrors} />
           </CardFooter>
         </Card>
         <div className="mt-4 text-center text-sm">
