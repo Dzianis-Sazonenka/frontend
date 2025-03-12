@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 import { Header } from "@/components/custom/header";
@@ -38,6 +39,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Toaster position="bottom-center" />
         <Header data={globalData.data.header} />
         {children}
         <Footer data={globalData.data.footer} />
