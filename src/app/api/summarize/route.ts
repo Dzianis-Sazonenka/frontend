@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { getUserMeLoader } from "@/data/services/get-user-me-loader";
 import { getAuthToken } from "@/data/services/get-token";
+
 import { ChatOpenAI } from "@langchain/openai";
 import { PromptTemplate } from "@langchain/core/prompts";
 import { StringOutputParser } from "@langchain/core/output_parsers";
@@ -10,7 +11,7 @@ async function generateSummary(content: string, template: string) {
 
   const model = new ChatOpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
-    modelName: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
+    modelName: process.env.OPENAI_MODEL ?? "gpt-3.5-turbo",
     temperature: process.env.OPENAI_TEMPERATURE
       ? parseFloat(process.env.OPENAI_TEMPERATURE)
       : 0.7,
@@ -24,8 +25,12 @@ async function generateSummary(content: string, template: string) {
 
   try {
     const summary = await chain.invoke({ text: content });
+    console.log("Generated Summary:", summary);
+
     return summary;
   } catch (error) {
+    console.log(error);
+
     if (error instanceof Error)
       return new Response(JSON.stringify({ error: error.message }));
     return new Response(
@@ -35,19 +40,19 @@ async function generateSummary(content: string, template: string) {
 }
 
 const TEMPLATE = `
-  INSTRUCTIONS:
-    For the this {text} complete the following steps.
-    Generate the title for based on the content provided
-    Summarize the following content and include 5 key topics, writing in first person using normal tone of voice.
+INSTRUCTIONS:
+  For the this {text} complete the following steps.
+  Generate the title for based on the content provided
+  Summarize the following content and include 5 key topics, writing in first person using normal tone of voice.
 
-    Write a youtube video description
-      - Include heading and sections.
-      - Incorporate keywords and key takeaways
+  Write a youtube video description
+    - Include heading and sections.
+    - Incorporate keywords and key takeaways
 
-    Generate bulleted list of key points and benefits
+  Generate bulleted list of key points and benefits
 
-    Return possible and best recommended key words
-  `;
+  Return possible and best recommended key words
+`;
 
 export async function POST(req: NextRequest) {
   const user = await getUserMeLoader();

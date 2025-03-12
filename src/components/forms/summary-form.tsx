@@ -65,7 +65,6 @@ export function SummaryForm() {
     toast.success("Testing Toast");
     setLoading(false);
   }
-
   function clearError() {
     setError(INITIAL_STATE);
     if (error.message) setValue("");
