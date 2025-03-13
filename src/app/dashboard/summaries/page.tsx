@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import ReactMarkdown from "react-markdown";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getSummaries } from "@/data/loader";
 
@@ -19,7 +19,7 @@ function LinkCard({ documentId, title, summary }: Readonly<LinkCardProps>) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ReactMarkdown
+          <div
             className="card-markdown prose prose-sm max-w-none
               prose-headings:text-gray-900 prose-headings:font-semibold
               prose-p:text-gray-600 prose-p:leading-relaxed
@@ -28,8 +28,10 @@ function LinkCard({ documentId, title, summary }: Readonly<LinkCardProps>) {
               prose-ul:list-disc prose-ul:pl-4
               prose-ol:list-decimal prose-ol:pl-4"
           >
-            {summary.slice(0, 164) + " [read more]"}
-          </ReactMarkdown>
+            <ReactMarkdown>
+              {summary.slice(0, 164) + " [read more]"}
+            </ReactMarkdown>
+          </div>
         </CardContent>
       </Card>
     </Link>
