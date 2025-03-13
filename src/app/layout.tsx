@@ -33,16 +33,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const globalData = await getGlobalData();
-  console.dir(globalData, { depth: null });
+  console.log("globalData", globalData, { depth: null });
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster position="bottom-center" />
-        <Header data={globalData.data.header} />
+        <Header data={globalData.header} />
         {children}
-        <Footer data={globalData.data.footer} />
+        <Footer data={globalData.footer} />
       </body>
     </html>
   );

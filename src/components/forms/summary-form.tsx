@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { SubmitButton } from "@/components/custom/submit-button";
 
 import { generateSummaryService } from "@/data/services/summary-service";
+import { createSummaryAction } from "@/data/actions/summary-actions";
 
 interface StrapiErrorsProps {
   message: string | null;
@@ -48,7 +49,6 @@ export function SummaryForm() {
     toast.success("Generating Summary");
 
     const summaryResponseData = await generateSummaryService(processedVideoId);
-    console.log(summaryResponseData, "Response from route handler");
 
     if (summaryResponseData.error) {
       setValue("");
@@ -62,7 +62,38 @@ export function SummaryForm() {
       return;
     }
 
-    toast.success("Testing Toast");
+    const payload = {
+      data: {
+        title: `Summary for video: ${processedVideoId}`,
+        videoId: processedVideoId,
+        summary: summaryResponseData.data,
+      },
+    };
+
+    try {
+      await createSummaryAction(payload);
+      toast.success("Summary Created");
+      // Reset form after successful creation
+      setValue("");
+      setError(INITIAL_STATE);
+    } catch (error) {
+      let errorMessage =
+        "An unexpected error occurred while creating the summary";
+
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      } else if (typeof error === "string") {
+        errorMessage = error;
+      }
+
+      toast.error(errorMessage);
+      setError({
+        message: errorMessage,
+        name: "Summary Error",
+      });
+      setLoading(false);
+      return;
+    }
     setLoading(false);
   }
   function clearError() {

@@ -11,7 +11,7 @@ async function generateSummary(content: string, template: string) {
 
   const model = new ChatOpenAI({
     openAIApiKey: process.env.OPENAI_API_KEY,
-    modelName: process.env.OPENAI_MODEL ?? "gpt-3.5-turbo",
+    modelName: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
     temperature: process.env.OPENAI_TEMPERATURE
       ? parseFloat(process.env.OPENAI_TEMPERATURE)
       : 0.7,

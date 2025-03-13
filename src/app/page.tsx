@@ -4,7 +4,8 @@ import { getHomePageData } from "@/data/loader";
 
 export default async function Home() {
   const strapiData = await getHomePageData();
-  const { blocks } = strapiData?.data || [];
+  const { blocks } = strapiData || [];
+  console.log("Strapi Data:", strapiData);
   return <main>{blocks.map(blockRenderer)}</main>;
 }
 
