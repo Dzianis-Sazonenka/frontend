@@ -25,11 +25,10 @@ async function generateSummary(content: string, template: string) {
 
   try {
     const summary = await chain.invoke({ text: content });
-    console.log("Generated Summary:", summary);
 
     return summary;
   } catch (error) {
-    console.log(error);
+    console.error(error);
 
     if (error instanceof Error)
       return new Response(JSON.stringify({ error: error.message }));

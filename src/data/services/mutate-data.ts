@@ -25,7 +25,7 @@ export async function mutateData(method: string, path: string, payload?: any) {
     const data = await response?.json();
     return data;
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
     throw error;
   }
 }

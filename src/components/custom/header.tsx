@@ -6,6 +6,7 @@ import { Logo } from "@/components/custom/logo";
 import { Button } from "@/components/ui/button";
 import { SummaryForm } from "@/components/forms/summary-form";
 import { LogoutButton } from "./logout-button";
+import { log } from "console";
 
 interface HeaderProps {
   data: {
@@ -46,7 +47,8 @@ export function LoggedInUser({
 }
 
 export async function Header({ data }: Readonly<HeaderProps>) {
-  const { logoText, ctaButton } = data;
+  const { logoText, ctaButton } = data ?? {};
+
   const user = await getUserMeLoader();
 
   return (
